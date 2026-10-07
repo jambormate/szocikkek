@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service.js';
 
 
@@ -70,5 +70,20 @@ export class AppController {
         first.title.localeCompare(second.title, 'hu'),
       ),
     }
+  }
+
+  @Get('filter')
+  @Render('filter')
+  filterArticles(@Query('minViews') minViews?: string) {
+    const parsedMinViews = Number(minViews ?? 0);
+    const threshold = Number.isFinite(parsedMinViews) ? parsedMinViews : 0;
+
+    return {
+      title: 'Szócikkek szűrése',
+      minViews: threshold,
+      articles: data
+        .filter((article) => article.views >= threshold)
+        .sort((first, second) => second.views - first.views),
+    };
   }
 }

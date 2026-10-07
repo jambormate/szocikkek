@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1><%= title %></h1>
+    <form action="/filter" method="get">
+        <label for="minViews">Minimum látogatásszám:</label>
+        <input id="minViews" name="minViews" type="number" value="<%= minViews %>">
+        <button type="submit">Szűrés</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Szócikk címe</th>
+                <th>Látogatások száma</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(article => { %>
+            <tr>
+                <td><a href="<%= article.url %>"><%= article.title %></a></td>
+                <td><%= article.views %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <nav aria-label="Navigáció" style="text-align: center;">
+        <a href="/">Főoldal</a>
+    </nav>
+</body>
+</html>

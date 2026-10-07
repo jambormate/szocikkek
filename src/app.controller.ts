@@ -65,7 +65,10 @@ export class AppController {
   @Render('index')
   getHello() {
     return {
-      title: 'My First NestJS App'
+      title: 'Szócikkek',
+      articles: [...data].sort((first, second) =>
+        first.title.localeCompare(second.title, 'hu'),
+      ),
     }
   }
 }

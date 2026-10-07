@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,25 @@
 </head>
 <body>
     <h1><%= title %></h1>
-    Hello EJS!
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Szócikk címe</th>
+                <th scope="col">Látogatások száma</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(article => { %>
+            <tr class="<%= article.views > 1000 ? 'popular' : '' %>">
+                <td><a href="<%= article.url %>"><%= article.title %></a></td>
+                <td><%= article.views %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <nav aria-label="Aloldalak" style="text-align: center;">
+        <a href="/filter?minViews=1000">Szűrés</a>
+        <a href="/new">Új adat</a>
+    </nav>
 </body>
 </html>

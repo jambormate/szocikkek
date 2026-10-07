@@ -35,4 +35,24 @@ form{
     text-align: center;
 }
 
+form label,
+form input{
+    display: block;
+    margin: 0.5rem auto;
+}
+
+.success,
+.error,
+.home-link{
+    text-align: center;
+}
+
+.success{
+    color: green;
+}
+
+.error{
+    color: red;
+}
+
 

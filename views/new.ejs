@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    
+    <h1><%= title %></h1>
+    <% if (success) { %>
+    <p class="success" role="status">Sikeres adatfelvétel</p>
+    <p class="home-link"><a href="/">Vissza a főoldalra</a></p>
+    <% } %>
+    <form action="/new" method="post">
+        <label for="title">Szócikk címe:</label>
+        <input id="title" name="title" type="text" value="<%= article.title %>">
+
+        <label for="url">URL:</label>
+        <input id="url" name="url" type="url" value="<%= article.url %>">
+
+        <label for="views">Megtekintések száma:</label>
+        <input id="views" name="views" type="number" value="<%= article.views %>">
+
+        <button type="submit">Adat felvétele</button>
+    </form>
+    <% if (locals.error) { %>
+    <p class="error" role="alert"><%= locals.error %></p>
+<% } %>
 </body>
 </html>

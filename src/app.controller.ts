@@ -1,7 +1,6 @@
-import { Controller, Get, Query, Render } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service.js';
-
-
+import { CreateArticleViewDto } from './CreateArticleViewDto.js';
 
 const data = [
   {
@@ -84,6 +83,58 @@ export class AppController {
       articles: data
         .filter((article) => article.views >= threshold)
         .sort((first, second) => second.views - first.views),
+    };
+  }
+
+  @Get('new')
+  @Render('new')
+  showNewArticleForm() {
+    return {
+      title: 'Új szócikk',
+      success: false,
+      error: undefined,
+      article: new CreateArticleViewDto(),
+    };
+  }
+
+  @Post('new')
+  @Render('new')
+  createArticle(@Body() form: CreateArticleViewDto) {
+    const article = {
+      title: typeof form?.title === 'string' ? form.title : '',
+      url: typeof form?.url === 'string' ? form.url : '',
+      views:
+        typeof form?.views === 'string' || typeof form?.views === 'number'
+          ? String(form.views)
+          : '',
+    };
+    const views =
+      article.views.trim() === '' ? Number.NaN : Number(article.views);
+    let error: string | undefined;
+
+    if (!article.title.trim() || !article.url.trim() || !article.views.trim()) {
+      error = 'Minden mező kitöltése kötelező.';
+    } else if (!article.url.startsWith('https://')) {
+      error = 'Az URL-nek https:// kezdetűnek kell lennie.';
+    } else if (!Number.isFinite(views) || views < 0) {
+      error = 'A megtekintések száma legalább 0 legyen.';
+    }
+
+    if (error) {
+      return {
+        title: 'Új szócikk',
+        success: false,
+        error,
+        article,
+      };
+    }
+
+    data.push({ ...article, views });
+
+    return {
+      title: 'Új szócikk',
+      success: true,
+      article: new CreateArticleViewDto(),
     };
   }
 }
